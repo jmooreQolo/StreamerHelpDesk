@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="StreamerHelpDeskClient/StreamerHelpDeskClient.csproj" />
+  <Project Path="StreamerHelpDeskServer/StreamerHelpDeskServer.csproj" Id="db1542ac-584a-47a0-b547-3184f4bc8f67" />
+</Solution>
