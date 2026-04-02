@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StreamerHelpDeskServer.Services;
+using StreamerHelpDeskServer.ViewModels;
 using System.IO;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
-using Wpf.Ui;
 
 namespace StreamerHelpDeskServer
 {
@@ -23,7 +24,10 @@ namespace StreamerHelpDeskServer
             .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(AppContext.BaseDirectory)); })
             .ConfigureServices((context, services) =>
             {
-                throw new NotImplementedException("No service or window was registered.");
+                services.AddSingleton<ServerConfigService>();
+                services.AddSingleton<MainWindowViewModel>();
+                services.AddSingleton<SignalRHostService>();
+                services.AddSingleton<MainWindow>();
             }).Build();
 
         /// <summary>
@@ -40,6 +44,9 @@ namespace StreamerHelpDeskServer
         private async void OnStartup(object sender, StartupEventArgs e)
         {
             await _host.StartAsync();
+
+            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
+            mainWindow.Show();
         }
 
         /// <summary>
@@ -47,6 +54,10 @@ namespace StreamerHelpDeskServer
         /// </summary>
         private async void OnExit(object sender, ExitEventArgs e)
         {
+            var signalRService = _host.Services.GetRequiredService<SignalRHostService>();
+            if (signalRService.IsRunning)
+                await signalRService.StopAsync();
+
             await _host.StopAsync();
 
             _host.Dispose();

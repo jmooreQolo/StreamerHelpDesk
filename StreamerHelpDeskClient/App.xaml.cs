@@ -1,11 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StreamerHelpDeskClient.Services;
 using System.IO;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
-using Wpf.Ui;
 
 namespace StreamerHelpDeskClient
 {
@@ -24,7 +23,9 @@ namespace StreamerHelpDeskClient
             .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(AppContext.BaseDirectory)); })
             .ConfigureServices((context, services) =>
             {
-                services.AddTransient<Window1>();
+                services.AddSingleton<ClientConfigService>();
+                services.AddSingleton<SignalRClientService>();
+                services.AddSingleton<Window1>();
             }).Build();
 
         /// <summary>

@@ -10,21 +10,21 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_New" Command="ApplicationCommands.New"/>
-                <MenuItem Header="_Open" Command="ApplicationCommands.Open"/>
-                <Separator/>
-                <MenuItem Header="_Save" Command="ApplicationCommands.Save"/>
-                <MenuItem Header="Save _As" Command="ApplicationCommands.SaveAs"/>
-                <Separator/>
                 <MenuItem Header="E_xit" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Client">
+                <MenuItem Header="_Connect" Click="ClientConnect_Click"/>
+                <MenuItem Header="_Disconnect" Click="ClientDisconnect_Click"/>
+                <Separator/>
+                <MenuItem Header="C_onfigure" Click="ClientConfigure_Click"/>
             </MenuItem>
         </Menu>
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="300" Width="700">
             <UniformGrid>
-                <Button Content="Other Stuff" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Button Content="Emergency" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Button Content="Quick Question" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Button x:Name="Tech_Help" Content="Tech Help" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <Button Content="Other Stuff" Margin="5" Click="HelpRequest_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <Button Content="Emergency" Margin="5" Click="HelpRequest_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <Button Content="Quick Question" Margin="5" Click="HelpRequest_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <Button x:Name="Tech_Help" Content="Tech Help" Margin="5" Click="HelpRequest_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             </UniformGrid>
         </Grid>
     </DockPanel>
