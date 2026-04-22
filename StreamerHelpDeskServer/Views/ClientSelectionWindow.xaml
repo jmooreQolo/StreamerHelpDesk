@@ -1,0 +1,28 @@
+<Window x:Class="StreamerHelpDeskServer.Views.ClientSelectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Select Client" Height="180" Width="360"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Background="{DynamicResource ApplicationBackgroundBrush}">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Select a client to chat with:" Margin="0,0,0,10"/>
+        
+        <ComboBox Grid.Row="1" x:Name="ClientComboBox" Margin="0,0,0,15"
+                  DisplayMemberPath="Value" SelectedValuePath="Key"/>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Connect" Width="75" Margin="0,0,10,0" Click="Connect_Click"/>
+            <Button Content="Cancel" Width="75" Click="Cancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using StreamerHelpDeskClient.Services;
+using StreamerHelpDeskClient.ViewModels;
 using StreamerHelpDeskClient.Views;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,24 +8,28 @@ using System.Windows.Controls;
 namespace StreamerHelpDeskClient
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
+    /// Interaction logic for StreamerHelpDeskClient.xaml
     /// </summary>
-    public partial class Window1 : Window
+    public partial class MainClientWindow : Window
     {
         private readonly SignalRClientService _signalRService;
         private readonly ClientConfigService _configService;
+        private readonly MainClientViewModel _viewModel;
+        private ChatWindow? _activeChatWindow;
 
-        public Window1(SignalRClientService signalRService, ClientConfigService configService)
+        public MainClientWindow(SignalRClientService signalRService, ClientConfigService configService)
         {
             InitializeComponent();
 
             _signalRService = signalRService;
             _configService = configService;
+            _viewModel = new MainClientViewModel();
+            DataContext = _viewModel;
 
-            Closed += Window1_Closed;
+            Closed += MainClientWindow_Closed;
         }
 
-        private async void Window1_Closed(object? sender, EventArgs e)
+        private async void MainClientWindow_Closed(object? sender, EventArgs e)
         {
             if (_signalRService.IsConnected)
                 await _signalRService.DisconnectAsync();
@@ -43,6 +48,45 @@ namespace StreamerHelpDeskClient
             {
                 var config = _configService.Load();
                 await _signalRService.ConnectAsync(config);
+
+                _signalRService.Connection!.On<string>("ReceiveChatRequest", (senderName) =>
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        var result = MessageBox.Show($"{senderName} wants to chat with you. Accept?",
+                            "Chat Request", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            if (_activeChatWindow != null)
+                            {
+                                _activeChatWindow.Activate();
+                                return;
+                            }
+
+                            _activeChatWindow = new ChatWindow(_signalRService.Connection!, config.ClientName)
+                            {
+                                Owner = this
+                            };
+
+                            _activeChatWindow.Closed += (s, args) =>
+                            {
+                                _activeChatWindow = null;
+                            };
+
+                            _signalRService.Connection.On<string, string>("ReceiveChatMessage", (sender, message) =>
+                            {
+                                _activeChatWindow?.ReceiveMessage(sender, message);
+                            });
+
+                            _activeChatWindow.Show();
+                        }
+                    });
+                });
+
+                await _signalRService.Connection.InvokeAsync("RegisterClient", config.ClientName);
+
+                _viewModel.IsConnected = true;
 
                 MessageBox.Show($"Connected to {config.ServerIP}:{config.PortNumber}",
                     "Connection Successful", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -64,6 +108,8 @@ namespace StreamerHelpDeskClient
             }
 
             await _signalRService.DisconnectAsync();
+
+            _viewModel.IsConnected = false;
 
             MessageBox.Show("Disconnected from the server.", "Disconnection Successful",
                 MessageBoxButton.OK, MessageBoxImage.Information);

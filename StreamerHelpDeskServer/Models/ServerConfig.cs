@@ -2,7 +2,7 @@ namespace StreamerHelpDeskServer.Models
 {
     public class ServerConfig
     {
-        public string Host { get; set; } = "localhost";
+        public string Host { get; set; } = "0.0.0.0";
         public int Port { get; set; } = 5000;
         public string HubPath { get; set; } = "/helpdesk";
         public int MaxConnections { get; set; } = 0;

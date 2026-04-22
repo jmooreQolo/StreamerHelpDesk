@@ -25,7 +25,7 @@ namespace StreamerHelpDeskClient
             {
                 services.AddSingleton<ClientConfigService>();
                 services.AddSingleton<SignalRClientService>();
-                services.AddSingleton<Window1>();
+                services.AddSingleton<MainClientWindow>();
             }).Build();
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace StreamerHelpDeskClient
         {
             await _host.StartAsync();
 
-            var mainWindow = _host.Services.GetRequiredService<Window1>();
+            var mainWindow = _host.Services.GetRequiredService<MainClientWindow>();
             mainWindow.Show();
         }
 

@@ -7,29 +7,63 @@
         mc:Ignorable="d"
         Title="Streamer Help Desk Server" Height="450" Width="800"
         Background="{DynamicResource ApplicationBackgroundBrush}">
+    <Window.Resources>
+        <local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    </Window.Resources>
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
+        <Menu DockPanel.Dock="Top" Background="#2D2D30" Foreground="#F1F1F1">
+            <MenuItem Header="_File" Foreground="#F1F1F1">
                 <Separator/>
                 <MenuItem Header="E_xit" Click="Exit_Click"/>
             </MenuItem>
-            <MenuItem Header="_Server">
-                <MenuItem Header="_Start" Click="ServerStart_Click"/>
-                <MenuItem Header="S_top" Click="ServerStop_Click"/>
+            <MenuItem Header="_Server" Foreground="#F1F1F1">
+                <MenuItem Header="_Start" Click="ServerStart_Click" IsEnabled="{Binding IsServerRunning, Converter={StaticResource InverseBooleanConverter}}"/>
+                <MenuItem Header="S_top" Click="ServerStop_Click" IsEnabled="{Binding IsServerRunning}"/>
                 <Separator/>
                 <MenuItem Header="_Configure" Click="ServerConfigure_Click"/>
             </MenuItem>
+            <MenuItem Header="_Chat" Foreground="#F1F1F1">
+                <MenuItem Header="_Open Chat Window" Click="OpenChatWindow_Click"/>
+            </MenuItem>
         </Menu>
         <Grid>
-            <ListView ItemsSource="{Binding Messages}" Margin="5">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Time" Width="140" DisplayMemberBinding="{Binding Timestamp, StringFormat='{}{0:yyyy-MM-dd HH:mm:ss}'}" />
-                        <GridViewColumn Header="Client" Width="120" DisplayMemberBinding="{Binding ClientName}" />
-                        <GridViewColumn Header="Category" Width="120" DisplayMemberBinding="{Binding Category}" />
-                        <GridViewColumn Header="Message" Width="350" DisplayMemberBinding="{Binding MessageText}" />
-                    </GridView>
-                </ListView.View>
+            <ListView ItemsSource="{Binding Messages}" Margin="5" x:Name="MessagesListView">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" 
+                                BorderThickness="0,0,0,1" Padding="5" Margin="0,2">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="{Binding Timestamp, StringFormat='{}{0:yyyy-MM-dd HH:mm:ss}'}" 
+                                           VerticalAlignment="Center" Margin="0,0,10,0" Foreground="#1E1E1E"/>
+                                <TextBlock Grid.Column="1" Text="{Binding ClientName}" 
+                                           VerticalAlignment="Center" Margin="0,0,10,0" Foreground="#1E1E1E"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Category}" 
+                                           VerticalAlignment="Center" Margin="0,0,10,0" Foreground="#1E1E1E"/>
+                                <TextBlock Grid.Column="3" Text="{Binding MessageText}" 
+                                           VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,0,10,0" Foreground="#1E1E1E"/>
+
+                                <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button Content="✓" Width="30" Height="30" Margin="0,0,5,0" 
+                                            Click="Accept_Click" Tag="{Binding}" 
+                                            ToolTip="Accept request"
+                                            Foreground="Green" FontWeight="Bold" FontSize="16"/>
+                                    <Button Content="✗" Width="30" Height="30" 
+                                            Click="Decline_Click" Tag="{Binding}" 
+                                            ToolTip="Decline request"
+                                            Foreground="Red" FontWeight="Bold" FontSize="16"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
         </Grid>
     </DockPanel>

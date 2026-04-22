@@ -24,6 +24,7 @@ namespace StreamerHelpDeskServer
             .ConfigureAppConfiguration(c => { c.SetBasePath(Path.GetDirectoryName(AppContext.BaseDirectory)); })
             .ConfigureServices((context, services) =>
             {
+                services.AddSingleton<LoggingService>();
                 services.AddSingleton<ServerConfigService>();
                 services.AddSingleton<MainWindowViewModel>();
                 services.AddSingleton<SignalRHostService>();
@@ -57,6 +58,9 @@ namespace StreamerHelpDeskServer
             var signalRService = _host.Services.GetRequiredService<SignalRHostService>();
             if (signalRService.IsRunning)
                 await signalRService.StopAsync();
+
+            var loggingService = _host.Services.GetRequiredService<LoggingService>();
+            loggingService.Dispose();
 
             await _host.StopAsync();
 

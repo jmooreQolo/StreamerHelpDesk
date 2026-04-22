@@ -1,20 +1,23 @@
-﻿<Window x:Class="StreamerHelpDeskClient.Window1"
+﻿<Window x:Class="StreamerHelpDeskClient.MainClientWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StreamerHelpDeskClient"
         mc:Ignorable="d"
-        Title="Window1" Height="450" Width="800"
+        Title="Streamer Help Desk - Client" Height="450" Width="800"
         Background="{DynamicResource ApplicationBackgroundBrush}">
+    <Window.Resources>
+        <local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    </Window.Resources>
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
+        <Menu DockPanel.Dock="Top" Background="#2D2D30" Foreground="#F1F1F1">
+            <MenuItem Header="_File" Foreground="#F1F1F1">
                 <MenuItem Header="E_xit" Click="Exit_Click"/>
             </MenuItem>
-            <MenuItem Header="_Client">
-                <MenuItem Header="_Connect" Click="ClientConnect_Click"/>
-                <MenuItem Header="_Disconnect" Click="ClientDisconnect_Click"/>
+            <MenuItem Header="_Client" Foreground="#F1F1F1">
+                <MenuItem Header="_Connect" Click="ClientConnect_Click" IsEnabled="{Binding IsConnected, Converter={StaticResource InverseBooleanConverter}}"/>
+                <MenuItem Header="_Disconnect" Click="ClientDisconnect_Click" IsEnabled="{Binding IsConnected}"/>
                 <Separator/>
                 <MenuItem Header="C_onfigure" Click="ClientConfigure_Click"/>
             </MenuItem>

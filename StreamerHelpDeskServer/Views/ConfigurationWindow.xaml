@@ -49,8 +49,8 @@
         <TextBlock Grid.Row="7" Grid.Column="0" Text="Keep-Alive Interval (sec):" VerticalAlignment="Center" Margin="0,0,10,5"/>
         <TextBox Grid.Row="7" Grid.Column="1" x:Name="KeepAliveTextBox" VerticalAlignment="Center" Margin="0,0,0,5"/>
 
-        <TextBlock Grid.Row="8" Grid.Column="0" Text="Client Timeout (sec):" VerticalAlignment="Center" Margin="0,0,10,5" Grid.RowSpan="2"/>
-        <TextBox Grid.Row="8" Grid.Column="1" x:Name="ClientTimeoutTextBox" VerticalAlignment="Center" Margin="0,0,0,5" Grid.RowSpan="2"/>
+        <TextBlock Grid.Row="9" Grid.Column="0" Text="Client Timeout (sec):" VerticalAlignment="Center" Margin="0,0,10,5"/>
+        <TextBox Grid.Row="9" Grid.Column="1" x:Name="ClientTimeoutTextBox" VerticalAlignment="Center" Margin="0,0,0,5"/>
 
         <!-- Debugging -->
         <TextBlock Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Text="Debugging" FontWeight="Bold" Margin="0,0,0,5"/>
